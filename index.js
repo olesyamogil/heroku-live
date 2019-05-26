@@ -1,4 +1,8 @@
-const TOKEN = "868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs";
+const config = {
+    TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
+    EASY_CRON_TOKEN: process.env.EASY_CRON_TOKEN,
+};
+
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
     webHook: {
@@ -7,15 +11,14 @@ const options = {
 };
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
-const bot = new TelegramBot(TOKEN, options);
+const url = process.env.APP_URL;
+const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
 const moment = require('moment');
 moment.locale('uk');
 
-const EASY_CRON_TOKEN = "f2764643a41fbeffb6d9fbe2cb735546";
-const easycron = require("easy-cron")({ token: EASY_CRON_TOKEN })
+const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN })
 
-bot.setWebHook(`${url}/bot${TOKEN}`);
+bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 
 bot.onText(/group (.+)/, (msg, match) => {
     const userId = msg.from.id;
