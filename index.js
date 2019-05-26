@@ -87,12 +87,12 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const text = match[1];
     const today = new Date();
     const timeTokens = match[2].split(':');
-    console.log(`day: ${today.day}, month: ${today.month}`);
+    console.log(`day: ${today.getDate()}, month: ${today.getMonth()}`);
     easycron.add({
         minute: timeTokens[1],
         hour: timeTokens[0],
-        day: today.day,
-        month: today.month+1,
+        day: today.getDate(),
+        month: today.getMonth()+1,
         url: `https://api.telegram.org/bot868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs/sendMessage?chat_id=${chatId}&text=${text}`,
         method: 'GET',
         headers:{
