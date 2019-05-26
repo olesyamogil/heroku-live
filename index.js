@@ -30,6 +30,7 @@ bot.onText(/parse/, (msg)=>{
     parseSchedule(userId);
 
 });
+
 function parseSchedule(userId) {
     JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=607599b2-3369-4bda-8320-803f33aac337')
         .then((dom) => {
