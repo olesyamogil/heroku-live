@@ -16,14 +16,10 @@ const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
 const moment = require('moment');
 moment.locale('uk');
 
-const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN })
+const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 
 bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 
-// Just to ping!
-bot.on('message', function onMessage(msg) {
-    bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
-});
 bot.onText(/parse/, (msg)=>{
     const userId = msg.from.id;
     const chatId = msg.chat.id;
@@ -61,10 +57,10 @@ function parseSchedule(userId, chatId) {
                         const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;
                         bot.sendMessage(userId, `OK. ${classDescription}`);
                         easycron.add({
-                            minute: 39,
-                            hour: 22,
-                            day: 26,
-                            month: 5,
+                            minute: timeTokens[1],
+                            hour: timeTokens[0],
+                            day: currentDay.format('DD'),
+                            month: currentDay.format('MM'),
                             url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
                             method: 'GET',
                             headers:{
