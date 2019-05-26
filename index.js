@@ -11,7 +11,7 @@ const options = {
 };
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const url = process.env.APP_URL;
+const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
 const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
 const moment = require('moment');
 moment.locale('uk');
@@ -71,7 +71,7 @@ function parseSchedule(userId) {
                             hour: 22,
                             day: 26,
                             month: 5,
-                            url: `https://api.telegram.org/bot868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs/sendMessage?chat_id=386033446&text=${classDescription}`,
+                            url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=386033446&text=${classDescription}`,
                             method: 'GET',
                             headers:{
                             },
