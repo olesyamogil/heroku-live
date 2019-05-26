@@ -11,6 +11,7 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "easy-cron": "git+https://github.com/ipragmatech/EasyCron-API.git",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "jsdom": "^15.1.0",
