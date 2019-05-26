@@ -20,23 +20,17 @@ const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN })
 
 bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 
-bot.onText(/group (.+)/, (msg, match) => {
-    const userId = msg.from.id;
-    const groupName = match[1];
-    bot.sendMessage(userId, `OK. ${match[1]}`);
-});
-
-
 // Just to ping!
 bot.on('message', function onMessage(msg) {
     bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
 });
 bot.onText(/parse/, (msg)=>{
     const userId = msg.from.id;
-    parseSchedule(userId);
+    const chatId = msg.chat.id;
+    parseSchedule(userId, chatId);
 });
 
-function parseSchedule(userId) {
+function parseSchedule(userId, chatId) {
     JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=607599b2-3369-4bda-8320-803f33aac337')
         .then((dom) => {
             const rows = dom.window.document.getElementById('ctl00_MainContent_FirstScheduleTable').getElementsByTagName('tr');
@@ -71,7 +65,7 @@ function parseSchedule(userId) {
                             hour: 22,
                             day: 26,
                             month: 5,
-                            url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=386033446&text=${classDescription}`,
+                            url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
                             method: 'GET',
                             headers:{
                             },
@@ -93,6 +87,7 @@ function parseSchedule(userId) {
 
 bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const userId = msg.from.id;
+    const chatId = msg.chat.id;
     const text = match[1];
     const timeTokens = match[2].split(':');
 
@@ -101,7 +96,7 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
         hour: timeTokens[0],
         day: 26,
         month: 5,
-        url: `https://api.telegram.org/bot868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs/sendMessage?chat_id=386033446&text=${text}`,
+        url: `https://api.telegram.org/bot868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs/sendMessage?chat_id=${chatId}&text=${text}`,
         method: 'GET',
         headers:{
         },
