@@ -9,6 +9,9 @@ const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
 const bot = new TelegramBot(TOKEN, options);
+const moment = require('moment');
+
+moment.locale('uk');
 const notes = [];
 
 bot.setWebHook(`${url}/bot${TOKEN}`);
