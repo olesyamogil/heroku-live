@@ -130,7 +130,7 @@ app.post('/', (req, res) => {
 });
 
 // Function to handle the root path
-app.post(`${url}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
+app.post(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
     console.log(req.params);
     console.log(req.body);
     console.log(req.query);
