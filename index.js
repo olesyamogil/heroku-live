@@ -1,7 +1,5 @@
 const config = require('./config.js');
 
-const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
-
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
     // webHook: {
@@ -120,6 +118,8 @@ app.post('/', (req, res) => {
     console.log(req.body);
     console.log(req.query);
     console.log(req.param('page'));
+    console.log(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`);
+
     // console.log(req.body);
     // Access the provided 'page' and 'limt' query parameters
     // let page = req.query.page;
@@ -128,7 +128,6 @@ app.post('/', (req, res) => {
     // Return the articles to the rendering engine
     res.end('ddddd');
 });
-console.log(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`);
 // Function to handle the root path
 app.post(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
     console.log(req.params);
