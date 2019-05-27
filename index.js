@@ -118,18 +118,12 @@ app.post('/', (req, res) => {
     console.log(req.body);
     console.log(req.query);
     console.log(req.param('page'));
-    console.log(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`);
-
-    // console.log(req.body);
-    // Access the provided 'page' and 'limt' query parameters
-    // let page = req.query.page;
-    // let limit = req.query.limit;
 
     // Return the articles to the rendering engine
     res.end('ddddd');
 });
 // Function to handle the root path
-app.post(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
+app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
     console.log(req.params);
     console.log(req.body);
     console.log(req.query);
