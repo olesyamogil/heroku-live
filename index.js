@@ -42,27 +42,20 @@ function parseSchedule(userId, chatId) {
                     const dateTokens = secondColumn.textContent.split('.');
                     currentDay = dateTokens[0];
                     currentMonth = dateTokens[1];
-                } else {
+                } else { // Every single class
                     const firstColumnChildNodes = firstColumn.childNodes;
                     const secondColumnChildNodes = secondColumn.childNodes;
-                    console.log("================================");
-                    console.log(secondColumnChildNodes);
-                    console.log("================================");
+                    const secondColumnArray = Array.from(secondColumnChildNodes);
+
                     if (secondColumn.innerHTML
                         && firstColumnChildNodes.length
                         && firstColumnChildNodes.length === 3) {
                         const timeTokens = firstColumnChildNodes[2].textContent.split(':');
                         const classStartHour = timeTokens[0];
                         const classStartMinute = timeTokens[1];
-                        console.log("--------------------------------");
-                        console.log(secondColumnChildNodes);
-                        console.log("---------------------------------");
-                        const classDescription = secondColumnChildNodes.reduce(
-                            (accumulator, currentValue) => {
-                                accumulator + currentValue.textContent;
-                                console.log(accumulator);
 
-                            }
+                        const classDescription = secondColumnChildNodes.reduce(
+                            (accumulator, currentValue) => accumulator + currentValue.textContent
                         );
                         /*const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
