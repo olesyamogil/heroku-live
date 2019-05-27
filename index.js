@@ -81,21 +81,6 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const text = match[1];
     const today = new Date();
     const timeTokens = match[2].split(':');
-    console.log(`day: ${today.getDate()}, month: ${today.getMonth()}`);
-    console.log({
-        minute: timeTokens[1],
-        hour: timeTokens[0],
-        day: today.getDate(),
-        month: today.getMonth()+1,
-        url: `${config.APP_URL}/sendNow`,
-        method: 'POST',
-        headers:{
-        },
-        payload: {
-            chat_id: chatId,
-            text: text,
-        }
-    });
     easycron.add({
         minute: timeTokens[1],
         hour: timeTokens[0],
@@ -125,10 +110,12 @@ app.use(bodyParser.json());
 
 // Function to handle the root path
 app.post('/sendNow', (req, res) => {
-    console.log(req.params);
-    console.log(req.body);
-    console.log(req.query);
-    console.log(req.param('page'));
+    console.log("++++");
+    console.log(JSON.parse(req.body.payload));
+    const PAYLOAD = JSON.parse(req.body.payload);
+    bot.sendMessage(PAYLOAD.chat_id, PAYLOAD.text);
+
+
 
     // Return the articles to the rendering engine
     res.end('ddddd');
