@@ -72,8 +72,7 @@ function parseSchedule(userId, chatId) {
                         }).catch(function(error) {
                             console.log(error)
                         });
-
-                        break;
+                        
                     }
                 }
             }
