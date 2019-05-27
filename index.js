@@ -129,7 +129,7 @@ app.post('/', (req, res) => {
     res.end('ddddd');
 });
 
-let server = app.listen(80, function() {
+let server = app.listen(config.APP_PORT, function() {
     console.log('Server is listening on port ' + config.APP_PORT)
 });
 
