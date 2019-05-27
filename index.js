@@ -82,6 +82,20 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const today = new Date();
     const timeTokens = match[2].split(':');
     console.log(`day: ${today.getDate()}, month: ${today.getMonth()}`);
+    console.log({
+        minute: timeTokens[1],
+        hour: timeTokens[0],
+        day: today.getDate(),
+        month: today.getMonth()+1,
+        url: `${config.APP_URL}`,
+        method: 'POST',
+        headers:{
+        },
+        payload: {
+            chat_id: chatId,
+            text: text,
+        }
+    });
     easycron.add({
         minute: timeTokens[1],
         hour: timeTokens[0],
