@@ -34,56 +34,43 @@ function parseSchedule(userId, chatId) {
                 const item = rows[rowIndex];
                 const firstColumn = item.querySelector('td:nth-child(1)');
                 const secondColumn = item.querySelector('td:nth-child(2)');
-
                 // Head line for day
                 if (!firstColumn.textContent
-                    && secondColumn.textContent
                     && secondColumn.textContent.match(/[0123]\.[01][0-9]/)) {
                     const dateTokens = secondColumn.textContent.split('.');
                     currentDay = dateTokens[0];
                     currentMonth = dateTokens[1];
                 } else { // Every single class
                     const firstColumnChildNodes = firstColumn.childNodes;
+                    const timeTokens = firstColumnChildNodes[2].textContent.split(':');
+                    const classStartHour = timeTokens[0];
+                    const classStartMinute = timeTokens[1];
+
                     const secondColumnChildNodes = secondColumn.childNodes;
                     const secondColumnArray = Array.from(secondColumnChildNodes);
+                    const classDescription = secondColumnArray.reduce(
+                        (accumulator, currentValue) => {return accumulator + currentValue.textContent + '\n' }
+                        , '');
 
-                    if (secondColumn.innerHTML
-                        && firstColumnChildNodes.length
-                        && firstColumnChildNodes.length === 3) {
-                        const timeTokens = firstColumnChildNodes[2].textContent.split(':');
-                        const classStartHour = timeTokens[0];
-                        const classStartMinute = timeTokens[1];
-
-                        const classDescription = secondColumnArray.reduce(
-                            (accumulator, currentValue) => {return accumulator + currentValue.textContent + '\n' }
-                            , '');
-                        /*const className = secondColumn.childNodes[0].textContent;
-                        const classTeacher = secondColumn.childNodes[2].textContent;
-                        const classRoom = secondColumn.childNodes[4].textContent;
-                        const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;*/
-
-                        bot.sendMessage(userId, classDescription);
-                        easycron.add({
-                            minute: classStartMinute,
-                            hour: classStartHour,
-                            day: currentDay,
-                            month: currentMonth,
-                            url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
-                            method: 'GET',
-                            headers:{
-                            },
-                            payload: {
-                            }
-                        }).then(function(response) {
-                            console.log("Cron Job Id is " + response.cron_job_id);
-                        }).catch(function(error) {
-                            console.log(error)
-                        });
-
-                    }
+                    bot.sendMessage(userId, classDescription);
+                    easycron.add({
+                        minute: classStartMinute,
+                        hour: classStartHour,
+                        day: currentDay,
+                        month: currentMonth,
+                        url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
+                        method: 'GET',
+                        headers:{
+                        },
+                        payload: {
+                        }
+                    }).then(function(response) {
+                        console.log("Cron Job Id is " + response.cron_job_id);
+                    }).catch(function(error) {
+                        console.log(error)
+                    });
                 }
             }
-
         });
 }
 
@@ -112,8 +99,6 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     });
 });
 
-/*
-cron webHook
+/*cron webHook
 submit form
-reduce
 form data*/
