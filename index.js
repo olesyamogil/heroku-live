@@ -57,7 +57,7 @@ function parseSchedule(userId, chatId) {
                         const classDescription = secondColumnArray.reduce(
                             (accumulator, currentValue) => {return accumulator + currentValue.textContent + '\n' }
                             , '');
-                        
+                        const message = `${currentDay}.${currentMonth} ${classStartHour}:${classStartMinute} \n ${classDescription}`;
                         bot.sendMessage(userId, classDescription);
                         easycron.add({
                             minute: classStartMinute,
