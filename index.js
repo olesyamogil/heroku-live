@@ -128,7 +128,7 @@ app.post('/', (req, res) => {
     // Return the articles to the rendering engine
     res.end('ddddd');
 });
-
+console.log(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`);
 // Function to handle the root path
 app.post(`${config.APP_URL}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
     console.log(req.params);
