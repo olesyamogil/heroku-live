@@ -1,3 +1,1 @@
-module.exports = (req, res) => {
-    console.log(11111);
-}
+const config = require('./config.js');
