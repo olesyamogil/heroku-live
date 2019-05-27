@@ -9,7 +9,7 @@ const options = {
     // }
 };
 const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
-bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
+// bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 
 const jsdom = require('jsdom');
@@ -121,6 +121,19 @@ app.post('/', (req, res) => {
     console.log(req.query);
     console.log(req.param('page'));
     // console.log(req.body);
+    // Access the provided 'page' and 'limt' query parameters
+    // let page = req.query.page;
+    // let limit = req.query.limit;
+
+    // Return the articles to the rendering engine
+    res.end('ddddd');
+});
+
+// Function to handle the root path
+app.post(`${url}/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
+    console.log(req.params);
+    console.log(req.body);
+    console.log(req.query);
     // Access the provided 'page' and 'limt' query parameters
     // let page = req.query.page;
     // let limit = req.query.limit;
