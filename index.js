@@ -101,7 +101,7 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
         hour: timeTokens[0],
         day: today.getDate(),
         month: today.getMonth()+1,
-        url: `${config.APP_URL}`,
+        url: `${config.APP_URL}/sendNow`,
         method: 'POST',
         headers:{
         },
