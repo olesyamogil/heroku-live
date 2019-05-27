@@ -45,6 +45,9 @@ function parseSchedule(userId, chatId) {
                 } else {
                     const firstColumnChildNodes = firstColumn.childNodes;
                     const secondColumnChildNodes = secondColumn.childNodes;
+                    console.log("================================");
+                    console.log(secondColumnChildNodes);
+                    console.log("================================");
                     if (secondColumn.innerHTML
                         && firstColumnChildNodes.length
                         && firstColumnChildNodes.length === 3) {
@@ -52,7 +55,13 @@ function parseSchedule(userId, chatId) {
                         const classStartHour = timeTokens[0];
                         const classStartMinute = timeTokens[1];
 
-                        const classDescription = secondColumnChildNodes.reduce((accumulator, currentValue) => accumulator + currentValue.textContent);
+                        const classDescription = secondColumnChildNodes.reduce(
+                            (accumulator, currentValue) => {
+                                accumulator + currentValue.textContent;
+                                console.log(accumulator);
+
+                            }
+                        );
                         /*const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
                         const classRoom = secondColumn.childNodes[4].textContent;
