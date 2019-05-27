@@ -114,7 +114,7 @@ express()
 
         res.end(`Olololo`)
     })
-    .listen(config.APP_PORT + 1, () => console.log(`Listening on ${ config.APP_PORT }`))
+    .listen(config.APP_PORT - 1, () => console.log(`Listening on ${ config.APP_PORT }`))
 
 
 
