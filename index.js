@@ -18,10 +18,6 @@ const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-/*const moment = require('moment');
-moment.locale('uk');*/
-
-
 bot.onText(/parse/, (msg)=>{
     const userId = msg.from.id;
     const chatId = msg.chat.id;
@@ -48,6 +44,7 @@ function parseSchedule(userId, chatId) {
                     currentMonth = dateTokens[1];
                 } else {
                     const firstColumnChildNodes = firstColumn.childNodes;
+                    const secondColumnChildNodes = secondColumn.childNodes;
                     if (secondColumn.innerHTML
                         && firstColumnChildNodes.length
                         && firstColumnChildNodes.length === 3) {
@@ -55,11 +52,12 @@ function parseSchedule(userId, chatId) {
                         const classStartHour = timeTokens[0];
                         const classStartMinute = timeTokens[1];
 
-                        const className = secondColumn.childNodes[0].textContent;
+                        const classDescription = secondColumnChildNodes.reduce((classDescription, currentNode) => { classDescription += currentNode.textContent} );
+                        /*const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
                         const classRoom = secondColumn.childNodes[4].textContent;
 
-                        const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;
+                        const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;*/
 
                         bot.sendMessage(userId, `OK. ${classDescription}`);
                         easycron.add({
@@ -111,7 +109,7 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     });
 });
 
-/*moment
+/*
 cron webHook
 submit form
 reduce
