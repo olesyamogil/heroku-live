@@ -109,8 +109,8 @@ const express        =        require("express");
 const bodyParser     =        require("body-parser");
 const app            =        express();
 //Here we are configuring express to use body-parser as middle-ware.
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Function to handle the root path
 app.post('/', (req, res) => {
