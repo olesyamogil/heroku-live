@@ -55,8 +55,8 @@ function parseSchedule(userId, chatId) {
                         const classStartMinute = timeTokens[1];
 
                         const classDescription = secondColumnArray.reduce(
-                            (accumulator, currentValue) => {return accumulator + currentValue.textContent }
-                            , 0);
+                            (accumulator, currentValue) => {return accumulator + '\n' + currentValue.textContent }
+                            , '');
                         /*const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
                         const classRoom = secondColumn.childNodes[4].textContent;
