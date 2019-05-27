@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require('./config.js');
 
 const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
 
