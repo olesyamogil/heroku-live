@@ -1,12 +1,7 @@
 const config = require('./config.js');
 
 const TelegramBot = require('node-telegram-bot-api');
-const options = {
-    // webHook: {
-    //     port: config.APP_PORT
-    // }
-};
-const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
+const bot = new TelegramBot(config.TELEGRAM_TOKEN);
 // bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 
@@ -92,11 +87,13 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
         hour: timeTokens[0],
         day: today.getDate(),
         month: today.getMonth()+1,
-        url: `https://api.telegram.org/bot868060908:AAExL4mV3gfQGD-Lnukk0TV43rmtuBduxUs/sendMessage?chat_id=${chatId}&text=${text}`,
-        method: 'GET',
+        url: `${config.APP_URL}`,
+        method: 'POST',
         headers:{
         },
         payload: {
+            chat_id: chatId,
+            text: text,
         }
     }).then(function(response) {
         console.log("Cron Job Id is " + response.cron_job_id);
@@ -113,7 +110,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Function to handle the root path
-app.post('/', (req, res) => {
+app.post('/sendNow', (req, res) => {
     console.log(req.params);
     console.log(req.body);
     console.log(req.query);
@@ -132,7 +129,7 @@ app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
 
     // Return the articles to the rendering engine
     res.end('ddddd');
-}); 
+});
 
 let server = app.listen(config.APP_PORT, function() {
     console.log('Server is listening on port ' + config.APP_PORT)
