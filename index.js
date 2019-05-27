@@ -3,22 +3,24 @@ const config = {
     EASY_CRON_TOKEN: process.env.EASY_CRON_TOKEN,
 };
 
+const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
+
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
     webHook: {
         port: process.env.PORT
     }
 };
+const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
+bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
+const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
+
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
-const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
+
 const moment = require('moment');
 moment.locale('uk');
 
-const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
-
-bot.setWebHook(`${url}/bot${config.TELEGRAM_TOKEN}`);
 
 bot.onText(/parse/, (msg)=>{
     const userId = msg.from.id;
@@ -31,36 +33,40 @@ function parseSchedule(userId, chatId) {
         .then((dom) => {
             const rows = dom.window.document.getElementById('ctl00_MainContent_FirstScheduleTable').getElementsByTagName('tr');
             let currentDay;
+            let currentMonth;
             for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
                 const item = rows[rowIndex];
                 const firstColumn = item.querySelector('td:nth-child(1)');
                 const secondColumn = item.querySelector('td:nth-child(2)');
 
                 // Head line for day
-                if (!firstColumn.innerHTML
-                    && secondColumn.innerHTML
-                    && secondColumn.innerHTML.match(/[0123]\.[01][0-9]/)) {
-                    currentDay = moment(secondColumn.innerHTML, 'DD.MM');
+                if (!firstColumn.textContent
+                    && secondColumn.textContent
+                    && secondColumn.textContent.match(/[0123]\.[01][0-9]/)) {
+                    const dateTokens = secondColumn.textContent.split('.');
+                    currentDay = dateTokens[0];
+                    currentMonth = dateTokens[1];
                 } else {
                     const firstColumnChildNodes = firstColumn.childNodes;
                     if (secondColumn.innerHTML
                         && firstColumnChildNodes.length
                         && firstColumnChildNodes.length === 3) {
                         const timeTokens = firstColumnChildNodes[2].textContent.split(':');
+                        const classStartHour = timeTokens[0];
+                        const classStartMinute = timeTokens[1];
 
                         const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
                         const classRoom = secondColumn.childNodes[4].textContent;
-                        const classDateTime = currentDay.hours(parseInt(timeTokens[0], 10))
-                            .minutes(parseInt(timeTokens[1], 10));
 
                         const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;
+
                         bot.sendMessage(userId, `OK. ${classDescription}`);
                         easycron.add({
-                            minute: timeTokens[1],
-                            hour: timeTokens[0],
-                            day: currentDay.format('DD'),
-                            month: currentDay.format('MM'),
+                            minute: classStartMinute,
+                            hour: classStartHour,
+                            day: currentDay,
+                            month: currentMonth,
                             url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
                             method: 'GET',
                             headers:{
@@ -72,7 +78,7 @@ function parseSchedule(userId, chatId) {
                         }).catch(function(error) {
                             console.log(error)
                         });
-                        
+
                     }
                 }
             }
@@ -104,3 +110,9 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
         console.log(error)
     });
 });
+
+moment
+cron webHook
+submit form
+reduce
+form data
