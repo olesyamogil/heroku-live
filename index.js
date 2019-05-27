@@ -55,12 +55,11 @@ function parseSchedule(userId, chatId) {
                         const classStartMinute = timeTokens[1];
 
                         const classDescription = secondColumnArray.reduce(
-                            (accumulator, currentValue) => accumulator + currentValue.innerHTML.textContent
-                        );
+                            (accumulator, currentValue) => {return accumulator + currentValue.textContent }
+                            , 0);
                         /*const className = secondColumn.childNodes[0].textContent;
                         const classTeacher = secondColumn.childNodes[2].textContent;
                         const classRoom = secondColumn.childNodes[4].textContent;
-
                         const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;*/
 
                         bot.sendMessage(userId, `OK. ${classDescription}`);
