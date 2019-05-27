@@ -1,14 +1,11 @@
-const config = {
-    TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
-    EASY_CRON_TOKEN: process.env.EASY_CRON_TOKEN,
-};
+const config = require('config');
 
 const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
 
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
     webHook: {
-        port: process.env.PORT
+        port: config.APP_PORT
     }
 };
 const bot = new TelegramBot(config.TELEGRAM_TOKEN, options);
@@ -40,8 +37,8 @@ function parseSchedule(userId, chatId) {
                     && secondColumn.textContent
                     && secondColumn.textContent.match(/[0123]\.[01][0-9]/)) {
                     const dateTokens = secondColumn.textContent.split('.');
-                    currentDay = dateTokens[0];
-                    currentMonth = dateTokens[1];
+                    currentDay = parseInt(dateTokens[0]);
+                    currentMonth = parseInt(dateTokens[1]);
                 } else { // Every single class
                     const firstColumnChildNodes = firstColumn.childNodes;
                     const secondColumnChildNodes = secondColumn.childNodes;
@@ -54,14 +51,11 @@ function parseSchedule(userId, chatId) {
                         const classStartHour = timeTokens[0];
                         const classStartMinute = timeTokens[1];
 
-                        /*const classDescription = secondColumnArray.reduce(
-                            (accumulator, currentValue) => {return accumulator + currentValue.textContent + '\n' }
-                            , '');*/
-                        const className = secondColumn.childNodes[0].textContent;
-                        const classTeacher = secondColumn.childNodes[2].textContent;
-                        const classRoom = secondColumn.childNodes[4].textContent;
-
-                        const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;
+                        const classDescription = secondColumnArray.reduce(
+                            (accumulator, currentValue) => {
+                                return accumulator + currentValue.textContent + '\n'
+                            },
+                            '');
                         const message = `${currentDay}.${currentMonth} ${classStartHour}:${classStartMinute} \n ${classDescription}`;
                         bot.sendMessage(userId, message);
                         easycron.add({
