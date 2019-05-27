@@ -124,9 +124,7 @@ app.post('/', (req, res) => {
 });
 // Function to handle the root path
 app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
-    console.log(req.params);
     console.log(req.body);
-    console.log(req.query);
     // Access the provided 'page' and 'limt' query parameters
     // let page = req.query.page;
     // let limit = req.query.limit;
