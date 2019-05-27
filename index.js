@@ -110,8 +110,8 @@ const config = require('./config.js');
 const express = require('express')
 
 express()
-    .get('/', (req, res) => {
-
+    .post('/', (req, res) => {
+        console.log(req.body);
         res.end(`Olololo`)
     })
     .listen(config.APP_PORT, () => console.log(`Listening on ${ config.APP_PORT }`))
