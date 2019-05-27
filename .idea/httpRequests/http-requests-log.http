@@ -1,8 +1,60 @@
-POST https://blooming-wave-78383.herokuapp.com/?dddd=2222
+GET http://localhost:444/?dddd=2222
 Accept: */*
 Cache-Control: no-cache
 
-<> 2019-05-27T083633.503.html
+<> 2019-05-27T090020.200.txt
+
+###
+
+GET http://localhost:445/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:444/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-05-27T090009.200.txt
+
+###
+
+GET https://localhost:444/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET https://localhost:444/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://blooming-wave-78383.herokuapp.com:100/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET https://blooming-wave-78383.herokuapp.com:100/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET blooming-wave-78383.herokuapp.com:100/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET https://blooming-wave-78383.herokuapp.com/?dddd=2222
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-05-27T085405.503.html
 
 ###
 
@@ -10,15 +62,7 @@ POST https://blooming-wave-78383.herokuapp.com/?dddd=2222
 Accept: */*
 Cache-Control: no-cache
 
-<> 2019-05-27T083312.503.html
-
-###
-
-POST https://blooming-wave-78383.herokuapp.com/?dddd=2222
-Accept: */*
-Cache-Control: no-cache
-
-<> 2019-05-27T083301.503.html
+<> 2019-05-27T084513.503.html
 
 ###
 

@@ -1,5 +1,5 @@
 const config = require('./config.js');
-
+//
 // const url = process.env.APP_URL || 'https://blooming-wave-78383.herokuapp.com:443';
 //
 // const TelegramBot = require('node-telegram-bot-api');
@@ -106,14 +106,17 @@ const config = require('./config.js');
 //         console.log(error)
 //     });
 // });
-var express = require('express')
-var bodyParser = require('body-parser')
-var jsonParser = bodyParser.json()
 
-var app = express()
-app.post('/', jsonParser, function (req, res) {
-    res.end('ddddd')
-})
+const express = require('express')
+
+express()
+    .get('/', (req, res) => {
+
+        res.end(`Olololo`)
+    })
+    .listen(config.APP_PORT + 1, () => console.log(`Listening on ${ config.APP_PORT }`))
+
+
 
 /*
 cron webHook
