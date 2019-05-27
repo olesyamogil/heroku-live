@@ -18,8 +18,8 @@ const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-const moment = require('moment');
-moment.locale('uk');
+/*const moment = require('moment');
+moment.locale('uk');*/
 
 
 bot.onText(/parse/, (msg)=>{
@@ -111,8 +111,8 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     });
 });
 
-moment
+/*moment
 cron webHook
 submit form
 reduce
-form data
+form data*/
