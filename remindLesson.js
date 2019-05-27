@@ -1,4 +1,3 @@
-const config = require('./config.js');
 module.exports = (req, res) => {
-    res.end('dddddd');
+    console.log(11111);
 }
