@@ -9,9 +9,11 @@ function sendForm (){
             const form = dom.window.document.getElementsByTagName('form');
             var formData = new FormData(form);
             formData.append( 'ctl00$MainContent$ctl00$txtboxGroup', 'ІСз-61');
+            console.log(formData);
             var request = new XMLHttpRequest();
             request.open("POST", "ScheduleGroupSelection.aspx");
             request.send(formData);
+            // console.log(request.response);
         });
 
 }
