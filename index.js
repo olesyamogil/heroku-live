@@ -132,7 +132,7 @@ app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
 
     // Return the articles to the rendering engine
     res.end('ddddd');
-});
+}); 
 
 let server = app.listen(config.APP_PORT, function() {
     console.log('Server is listening on port ' + config.APP_PORT)
