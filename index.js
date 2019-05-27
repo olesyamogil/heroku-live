@@ -54,9 +54,14 @@ function parseSchedule(userId, chatId) {
                         const classStartHour = timeTokens[0];
                         const classStartMinute = timeTokens[1];
 
-                        const classDescription = secondColumnArray.reduce(
+                        /*const classDescription = secondColumnArray.reduce(
                             (accumulator, currentValue) => {return accumulator + currentValue.textContent + '\n' }
-                            , '');
+                            , '');*/
+                        const className = secondColumn.childNodes[0].textContent;
+                        const classTeacher = secondColumn.childNodes[2].textContent;
+                        const classRoom = secondColumn.childNodes[4].textContent;
+
+                        const classDescription = `\nSubject: ${className} \nTeacher: ${classTeacher} \nRoom: ${classRoom}`;
                         const message = `${currentDay}.${currentMonth} ${classStartHour}:${classStartMinute} \n ${classDescription}`;
                         bot.sendMessage(userId, message);
                         easycron.add({
