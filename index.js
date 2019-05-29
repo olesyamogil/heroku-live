@@ -98,7 +98,7 @@ function sendForm (){
                     formData: formData
                 };
             request.post( options, function(error, response, body) {
-                console.log( body );
+                //console.log( body );
                 const scheduleDOM = new JSDOM(body);
                 const rows = scheduleDOM.window.document.getElementById('ctl00_MainContent_FirstScheduleTable').getElementsByTagName('tr');
                 let currentDay;
