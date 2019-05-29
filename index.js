@@ -69,7 +69,7 @@ function parseSchedule(userId, chatId) {
                         }).then(function(response) {
                             console.log("Cron Job Id is " + response.cron_job_id);
                         }).catch(function(error) {
-                            console.log(error + "huy1");
+                            console.log(error);
                         });
 
                     }
@@ -144,16 +144,19 @@ function sendForm (userId, chatId){
                                 hour: classStartHour,
                                 day: currentDay,
                                 month: currentMonth,
-                                url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
-                                method: 'GET',
+                                url: `${config.APP_URL}/sendNow`,
+                                method: 'POST',
                                 headers:{
                                 },
                                 payload: {
+                                    chat_id: chatId,
+                                    text: message
                                 }
                             }).then(function(response) {
                                 console.log("Cron Job Id is " + response.cron_job_id);
                             }).catch(function(error) {
-                                console.log(error  + "huy3")
+                                console.log('error');
+                                console.log(error)
                             });
 
                         }
@@ -185,7 +188,7 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     }).then(function(response) {
         console.log("Cron Job Id is " + response.cron_job_id);
     }).catch(function(error) {
-        console.log(error  + "huy2")
+        console.log(error)
     });
 });
 
@@ -215,11 +218,3 @@ app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
 let server = app.listen(config.APP_PORT, function() {
     console.log('Server is listening on port ' + config.APP_PORT)
 });
-
-
-
-/*
-cron webHook
-submit form
-reduce
-form data*/
