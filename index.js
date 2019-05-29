@@ -3,7 +3,6 @@ const config = require('./config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(config.TELEGRAM_TOKEN);
 const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
-const phantom = require('phantom');
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -85,12 +84,9 @@ function sendForm (){
             const form = dom.window.document.querySelectorAll('form input');
             const form1 = dom.window.document.querySelectorAll('form');
             let formData = {};
-            console.log(form1);
-            console.log("===========================");
             let formArray = Array.from(form);
             formArray.forEach(function(item, index){
                 formData[item.getAttribute("name")]=item.value;
-                console.log(index + item.getAttribute("name") + '------' + item.value + '\n');
             });
             formData["ctl00$MainContent$ctl00$txtboxGroup"] = "ІС-з61";
             let request = require("request"),
