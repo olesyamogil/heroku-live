@@ -69,7 +69,8 @@ function parseSchedule(userId, chatId) {
                         }).then(function(response) {
                             console.log("Cron Job Id is " + response.cron_job_id);
                         }).catch(function(error) {
-                            console.log(error)
+                            console.log(error);
+                            console.log("huy");
                         });
 
                     }
