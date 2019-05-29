@@ -10,7 +10,7 @@ const { JSDOM } = jsdom;
 bot.onText(/parse/, (msg)=>{
     const userId = msg.from.id;
     const chatId = msg.chat.id;
-    parseSchedule(userId, chatId);
+    sendForm(userId, chatId);
 });
 
 function parseSchedule(userId, chatId) {
@@ -78,7 +78,7 @@ function parseSchedule(userId, chatId) {
 
         });
 }
-function sendForm (){
+function sendForm (userId, chatId){
     JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx')
         .then((dom) => {
             const form = dom.window.document.querySelectorAll('form input');
@@ -163,7 +163,6 @@ function sendForm (){
         });
 
 }
-sendForm();
 bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const userId = msg.from.id;
     const chatId = msg.chat.id;
