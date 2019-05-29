@@ -69,8 +69,7 @@ function parseSchedule(userId, chatId) {
                         }).then(function(response) {
                             console.log("Cron Job Id is " + response.cron_job_id);
                         }).catch(function(error) {
-                            console.log(error);
-                            console.log("huy");
+                            console.log(error + "huy");
                         });
 
                     }
@@ -154,7 +153,7 @@ function sendForm (userId, chatId){
                             }).then(function(response) {
                                 console.log("Cron Job Id is " + response.cron_job_id);
                             }).catch(function(error) {
-                                console.log(error)
+                                console.log(error  + "huy")
                             });
 
                         }
@@ -186,7 +185,7 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     }).then(function(response) {
         console.log("Cron Job Id is " + response.cron_job_id);
     }).catch(function(error) {
-        console.log(error)
+        console.log(error  + "huy")
     });
 });
 
