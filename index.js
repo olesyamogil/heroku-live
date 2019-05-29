@@ -13,76 +13,10 @@ bot.onText(/parse/, (msg)=>{
     sendForm(userId, chatId);
 });
 
-function parseSchedule(userId, chatId) {
-    JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=607599b2-3369-4bda-8320-803f33aac337')
-        .then((dom) => {
-            const rows = dom.window.document.getElementById('ctl00_MainContent_FirstScheduleTable').getElementsByTagName('tr');
-            let currentDay;
-            let currentMonth;
-            for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
-                const item = rows[rowIndex];
-                const firstColumn = item.querySelector('td:nth-child(1)');
-                const secondColumn = item.querySelector('td:nth-child(2)');
-
-                // Head line for day
-                if (!firstColumn.textContent
-                    && secondColumn.textContent
-                    && secondColumn.textContent.match(/[0123]\.[01][0-9]/)) {
-                    const dateTokens = secondColumn.textContent.split('.');
-                    currentDay = parseInt(dateTokens[0]);
-                    currentMonth = parseInt(dateTokens[1]);
-                } else { // Every single class
-                    const firstColumnChildNodes = firstColumn.childNodes;
-                    const secondColumnChildNodes = secondColumn.childNodes;
-                    const secondColumnArray = Array.from(secondColumnChildNodes);
-
-                    if (secondColumn.innerHTML
-                        && firstColumnChildNodes.length
-                        && firstColumnChildNodes.length === 3) {
-                        const TIME_COLUMN_INDEX = 2;
-                        const timeTokens = firstColumnChildNodes[TIME_COLUMN_INDEX].textContent.split(':');
-
-                        const HOURS_TOKEN_INDEX = 0;
-                        const classStartHour = timeTokens[HOURS_TOKEN_INDEX];
-
-                        const MINUTES_TOKEN_INDEX = 1;
-                        const classStartMinute = timeTokens[MINUTES_TOKEN_INDEX];
-
-                        const classDescription = secondColumnArray.reduce(
-                            (accumulator, currentValue) => {
-                                return accumulator + currentValue.textContent + '\n'
-                            },
-                            '');
-                        const message = `${currentDay}.${currentMonth} ${classStartHour}:${classStartMinute} \n ${classDescription}`;
-                        bot.sendMessage(userId, message);
-                        easycron.add({
-                            minute: classStartMinute,
-                            hour: classStartHour,
-                            day: currentDay,
-                            month: currentMonth,
-                            url: `https://api.telegram.org/bot${config.TELEGRAM_TOKEN}/sendMessage?chat_id=${chatId}&text=${classDescription}`,
-                            method: 'GET',
-                            headers:{
-                            },
-                            payload: {
-                            }
-                        }).then(function(response) {
-                            console.log("Cron Job Id is " + response.cron_job_id);
-                        }).catch(function(error) {
-                            console.log(error);
-                        });
-
-                    }
-                }
-            }
-
-        });
-}
 function sendForm (userId, chatId){
     JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx')
         .then((dom) => {
             const form = dom.window.document.querySelectorAll('form input');
-            const form1 = dom.window.document.querySelectorAll('form');
             let formData = {};
             let formArray = Array.from(form);
             formArray.forEach(function(item, index){
@@ -166,6 +100,7 @@ function sendForm (userId, chatId){
         });
 
 }
+
 bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     const userId = msg.from.id;
     const chatId = msg.chat.id;
