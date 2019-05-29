@@ -17,9 +17,10 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
+            <state relative-caret-position="186">
+              <caret line="155" column="57" selection-start-line="155" selection-start-column="54" selection-end-line="155" selection-end-column="57" />
               <folding>
+                <element signature="n#!!block;n#parseSchedule#0" />
                 <element signature="e#3758#4518#0" />
               </folding>
             </state>
@@ -62,6 +63,8 @@
       <find>console</find>
       <find>user</find>
       <find>easycron</find>
+      <find>console.l</find>
+      <find>huy</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -646,12 +649,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558976866739</updated>
-      <workItem from="1558976867920" duration="28450000" />
+      <workItem from="1558976867920" duration="28802000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28450000" />
+    <option name="totallyTimeSpent" value="28802000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -775,9 +778,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="72" column="47" selection-start-line="72" selection-start-column="47" selection-end-line="72" selection-end-column="47" />
+        <state relative-caret-position="186">
+          <caret line="155" column="57" selection-start-line="155" selection-start-column="54" selection-end-line="155" selection-end-column="57" />
           <folding>
+            <element signature="n#!!block;n#parseSchedule#0" />
             <element signature="e#3758#4518#0" />
           </folding>
         </state>
