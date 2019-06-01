@@ -7,22 +7,41 @@ const easycron = require("easy-cron")({ token: config.EASY_CRON_TOKEN });
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-bot.onText(/parse/, (msg)=>{
+/**
+ * Example: /parse "ІС-з61"
+ */
+bot.onText(/parse (.+)/, (msg, match)=>{
     const userId = msg.from.id;
     const chatId = msg.chat.id;
-    sendForm(userId, chatId);
+    const requestedGroup = match[1];
+
+    const supportedGroups = ["ІС-з61"];
+    const originalGroupsList = supportedGroups.filter(function (originalGroupName) {
+        return originalGroupName.toUpperCase() === requestedGroup.toUpperCase();
+    });
+    const originalGroup = originalGroupsList.length ? originalGroupsList[0] : false;
+
+    if (originalGroup) {
+        sendForm(userId, chatId, originalGroup);
+    } else {
+        bot.sendMessage(chatId, "Unknown group. Supported groups:");
+        supportedGroups.forEach(function (groupName) {
+            bot.sendMessage(chatId, groupName);
+        })
+    }
+
 });
 
-function sendForm (userId, chatId){
+function sendForm (userId, chatId, group){
     JSDOM.fromURL('http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx')
         .then((dom) => {
             const form = dom.window.document.querySelectorAll('form input');
             let formData = {};
             let formArray = Array.from(form);
-            formArray.forEach(function(item, index){
+            formArray.forEach(function(item){
                 formData[item.getAttribute("name")]=item.value;
             });
-            formData["ctl00$MainContent$ctl00$txtboxGroup"] = "ІС-з61";
+            formData["ctl00$MainContent$ctl00$txtboxGroup"] = group;
             let request = require("request"),
                 options = {
                     url: 'http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx',
@@ -34,11 +53,17 @@ function sendForm (userId, chatId){
             request.post( options, function(error, response, body) {
                 //console.log( body );
                 const scheduleDOM = new JSDOM(body);
-                const rows = scheduleDOM.window.document.getElementById('ctl00_MainContent_FirstScheduleTable').getElementsByTagName('tr');
+                const table = scheduleDOM.window.document.getElementById('ctl00_MainContent_FirstScheduleTable');
+                if (!table) {
+                    console.error("Cannot send form");
+                    bot.sendMessage(userId, "Cannot parse the page");
+                    return false;
+                }
+                const rows = Array.from(table.getElementsByTagName('tr'));
+
                 let currentDay;
                 let currentMonth;
-                for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
-                    const item = rows[rowIndex];
+                rows.forEach(function (item) {
                     const firstColumn = item.querySelector('td:nth-child(1)');
                     const secondColumn = item.querySelector('td:nth-child(2)');
 
@@ -50,21 +75,18 @@ function sendForm (userId, chatId){
                         currentDay = parseInt(dateTokens[0]);
                         currentMonth = parseInt(dateTokens[1]);
                     } else { // Every single class
-                        const firstColumnChildNodes = firstColumn.childNodes;
-                        const secondColumnChildNodes = secondColumn.childNodes;
-                        const secondColumnArray = Array.from(secondColumnChildNodes);
-
-                        if (secondColumn.innerHTML
-                            && firstColumnChildNodes.length
-                            && firstColumnChildNodes.length === 3) {
+                        const firstColumnArray = Array.from(firstColumn.childNodes);
+                        const secondColumnArray = Array.from(secondColumn.childNodes);
+                        if (firstColumnArray.length === 3 && secondColumnArray.length === 5) {
                             const TIME_COLUMN_INDEX = 2;
-                            const timeTokens = firstColumnChildNodes[TIME_COLUMN_INDEX].textContent.split(':');
 
-                            const HOURS_TOKEN_INDEX = 0;
-                            const classStartHour = timeTokens[HOURS_TOKEN_INDEX];
-
-                            const MINUTES_TOKEN_INDEX = 1;
-                            const classStartMinute = timeTokens[MINUTES_TOKEN_INDEX];
+                            const classStartTime = firstColumnArray[TIME_COLUMN_INDEX].textContent;
+                            let classStartHour, classStartMinute;
+                            if (classStartTime.match(/[012][0-9]:[1-5][0-9]/)) {
+                                const timeTokens = firstColumnArray[TIME_COLUMN_INDEX].textContent.split(':');
+                                classStartHour = timeTokens[0];
+                                classStartMinute = timeTokens[1];
+                            }
 
                             const classDescription = secondColumnArray.reduce(
                                 (accumulator, currentValue) => {
@@ -80,8 +102,6 @@ function sendForm (userId, chatId){
                                 month: currentMonth,
                                 url: `${config.APP_URL}/sendNow`,
                                 method: 'POST',
-                                headers:{
-                                },
                                 payload: {
                                     chat_id: chatId,
                                     text: message
@@ -89,20 +109,18 @@ function sendForm (userId, chatId){
                             }).then(function(response) {
                                 console.log("Cron Job Id is " + response.cron_job_id);
                             }).catch(function(error) {
-                                console.log('error');
+                                console.error('Something went wrong');
                                 console.log(error)
                             });
-
                         }
                     }
-                }
+                });
             });
         });
 
 }
 
 bot.onText(/remind (.+) at (.+)/, (msg, match) => {
-    const userId = msg.from.id;
     const chatId = msg.chat.id;
     const text = match[1];
     const today = new Date();
@@ -114,8 +132,6 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
         month: today.getMonth()+1,
         url: `${config.APP_URL}/sendNow`,
         method: 'POST',
-        headers:{
-        },
         payload: {
             chat_id: chatId,
             text: text,
@@ -123,29 +139,29 @@ bot.onText(/remind (.+) at (.+)/, (msg, match) => {
     }).then(function(response) {
         console.log("Cron Job Id is " + response.cron_job_id);
     }).catch(function(error) {
+        console.error('Something went wrong');
         console.log(error)
     });
 });
 
-const express        =        require("express");
-const bodyParser     =        require("body-parser");
-const app            =        express();
+const express     = require("express");
+const bodyParser  = require("body-parser");
+const app         = express();
+
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Function to handle the root path
 app.post('/sendNow', (req, res) => {
-    const PAYLOAD = JSON.parse(req.body.payload);
-    bot.sendMessage(PAYLOAD.chat_id, PAYLOAD.text);
-
+    const payLoad = JSON.parse(req.body.payload);
+    bot.sendMessage(payLoad.chat_id, payLoad.text);
     res.end('OK');
 });
 // Function to handle the root path
 app.post(`/bot${config.TELEGRAM_TOKEN}`, (req, res) => {
     console.log(req.body);
     bot.processUpdate(req.body);
-
     // Return the articles to the rendering engine
     res.end('ddddd');
 });
